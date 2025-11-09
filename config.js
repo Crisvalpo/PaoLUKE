@@ -2,7 +2,7 @@
 const CONFIG = {
     // URL de la API de Google Apps Script
     // Reemplaza XXXXXXXXX con tu ID de script real
-    DATA_URL: "https://script.google.com/macros/s/XXXXXXXXX/exec",
+    DATA_URL: "https://script.google.com/macros/s/AKfycbz0bhf97UafLb5NpCSNa7scDWxb87QbNs32JqsBQZ4p96XNj1rguVZcFWd--Hf0mioueQ/exec",
 // Número de WhatsApp (formato internacional sin +)
 WHATSAPP: "56956892107",
 
