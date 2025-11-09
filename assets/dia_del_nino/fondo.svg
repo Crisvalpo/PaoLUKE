@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800">
+  <defs>
+    <linearGradient id="gradNino" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffe66d;stop-opacity:0.3" />
+      <stop offset="100%" style="stop-color:#4ecdc4;stop-opacity:0.3" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#gradNino)"/>
+  <!-- Globos -->
+  <ellipse cx="150" cy="200" rx="30" ry="40" fill="#ff6b6b" opacity="0.2"/>
+  <line x1="150" y1="240" x2="150" y2="300" stroke="#ff6b6b" stroke-width="2" opacity="0.2"/>
+  <ellipse cx="900" cy="500" rx="35" ry="45" fill="#4ecdc4" opacity="0.2"/>
+  <line x1="900" y1="545" x2="900" y2="610" stroke="#4ecdc4" stroke-width="2" opacity="0.2"/>
+  <ellipse cx="400" cy="150" rx="28" ry="38" fill="#ffe66d" opacity="0.2"/>
+  <line x1="400" y1="188" x2="400" y2="250" stroke="#ffe66d" stroke-width="2" opacity="0.2"/>
+  <ellipse cx="1000" cy="300" rx="32" ry="42" fill="#ff6b6b" opacity="0.2"/>
+  <line x1="1000" y1="342" x2="1000" y2="400" stroke="#ff6b6b" stroke-width="2" opacity="0.2"/>
+  <!-- Estrellas coloridas -->
+  <path d="M300,600 L305,615 L320,615 L308,625 L313,640 L300,630 L287,640 L292,625 L280,615 L295,615 Z" fill="#ffe66d" opacity="0.2"/>
+  <path d="M700,250 L705,265 L720,265 L708,275 L713,290 L700,280 L687,290 L692,275 L680,265 L695,265 Z" fill="#4ecdc4" opacity="0.2"/>
+  <path d="M550,700" L555,710 L565,710 L557,717 L560,727 L550,720 L540,727 L543,717 L535,710 L545,710 Z" fill="#ff6b6b" opacity="0.2"/>
+  <!-- Confeti -->
+  <g opacity="0.3">
+    <rect x="200" y="400" width="8" height="15" fill="#ff6b6b" transform="rotate(20 204 407)"/>
+    <rect x="800" y="600" width="8" height="15" fill="#4ecdc4" transform="rotate(-30 804 607)"/>
+    <rect x="500" y="300" width="8" height="15" fill="#ffe66d" transform="rotate(45 504 307)"/>
+    <circle cx="350" cy="550" r="5" fill="#ff6b6b"/>
+    <circle cx="950" cy="150" r="5" fill="#4ecdc4"/>
+    <circle cx="650" cy="450" r="5" fill="#ffe66d"/>
+  </g>
+  <!-- Juguetes abstractos -->
+  <g opacity="0.15">
+    <circle cx="600" cy="600" r="40" fill="#ff6b6b"/>
+    <rect x="580" y="640" width="40" height="30" rx="5" fill="#4ecdc4"/>
+  </g>
+</svg>

@@ -1,0 +1,34 @@
+/* Tema Día del Niño */
+:root {
+    --primary-color: #ff6b6b;
+    --secondary-color: #4ecdc4;
+    --accent-color: #ffe66d;
+    --text-color: #2c3e50;
+    --bg-color: #fff9e6;
+    --card-bg: #ffffff;
+}
+body {
+background: linear-gradient(135deg, #fff9e6 0%, #ffebb3 100%);
+}
+header {
+background: linear-gradient(135deg, #ff6b6b 0%, #4ecdc4 100%);
+}
+.producto-precio {
+color: #ff6b6b !important;
+}
+.btn-primary {
+background: #ffe66d !important;
+color: #2c3e50 !important;
+}
+.btn-primary:hover {
+background: #ffd93d !important;
+}
+.btn-whatsapp-general {
+background: #4ecdc4 !important;
+}
+.btn-whatsapp-general:hover {
+background: #3ab8ad !important;
+}
+.producto-card:hover {
+transform: translateY(-5px) rotate(0.5deg);
+}
