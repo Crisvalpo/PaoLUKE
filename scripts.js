@@ -204,84 +204,96 @@ comentariosList.innerHTML = `
 
 await cargarComentarios(productoID);
 }
-// Cargar comentarios de un producto
+// Cargar comentarios aprobados de un producto
 async function cargarComentarios(productoID) {
-const comentariosList = document.getElementById('comentarios-list');
-try {
-    const response = await fetch(`${CONFIG.DATA_URL}?comentarios=true&productoID=${productoID}`);
-    
-    if (!response.ok) {
-        throw new Error('Error al cargar comentarios');
+    const comentariosList = document.getElementById('comentarios-list');
+    comentariosList.innerHTML = `
+        <div class="loading">
+            <div class="spinner"></div>
+            <p>Cargando comentarios...</p>
+        </div>
+    `;
+
+    try {
+        const response = await fetch(`${CONFIG.DATA_URL}?comentarios=true&productoID=${productoID}`);
+
+        if (!response.ok) {
+            throw new Error('Error al cargar comentarios');
+        }
+
+        const data = await response.json();
+        const comentarios = (data.comentarios || []).filter(c => c.Aprobado === true);
+
+        if (comentarios.length === 0) {
+            comentariosList.innerHTML = `
+                <p style="text-align: center; color: #999; padding: 2rem;">
+                    Aún no hay comentarios aprobados. ¡Sé el primero en comentar!
+                </p>`;
+            return;
+        }
+
+        comentariosList.innerHTML = '';
+        comentarios.forEach(comentario => {
+            const comentarioDiv = document.createElement('div');
+            comentarioDiv.className = 'comentario-item';
+            comentarioDiv.innerHTML = `
+                <div class="comentario-usuario">
+                    ${comentario.Usuario || 'Anónimo'}
+                </div>
+                <div class="comentario-texto">
+                    ${comentario.Comentario}
+                </div>
+            `;
+            comentariosList.appendChild(comentarioDiv);
+        });
+
+    } catch (error) {
+        console.error('Error al cargar comentarios:', error);
+        comentariosList.innerHTML = `
+            <p style="text-align: center; color: #e74c3c; padding: 2rem;">
+                Error al cargar comentarios. Intenta más tarde.
+            </p>`;
     }
-    
-    const data = await response.json();
-    const comentarios = data.comentarios || [];
-    
-    if (comentarios.length === 0) {
-        comentariosList.innerHTML = '<p style="text-align: center; color: #999; padding: 2rem;">Aún no hay comentarios. ¡Sé el primero en comentar!</p>';
+}
+
+// --- Enviar comentario a la API ---
+async function enviarComentario() {
+    const textoComentario = document.getElementById("comentario-texto").value.trim();
+
+    if (!textoComentario) {
+        mostrarNotificacion("⚠️ Escribe un comentario antes de enviarlo.", "error");
         return;
     }
-    
-    comentariosList.innerHTML = '';
-    comentarios.forEach(comentario => {
-        const comentarioDiv = document.createElement('div');
-        comentarioDiv.className = 'comentario-item';
-        comentarioDiv.innerHTML = `
-            <div class="comentario-usuario">${comentario.Usuario || 'Anónimo'}</div>
-            <div class="comentario-texto">${comentario.Comentario}</div>
-        `;
-        comentariosList.appendChild(comentarioDiv);
-    });
-    
-} catch (error) {
-    console.error('Error al cargar comentarios:', error);
-    comentariosList.innerHTML = '<p style="text-align: center; color: #e74c3c; padding: 2rem;">Error al cargar comentarios.</p>';
-}
-}
-// Enviar comentario
-async function enviarComentario() {
-const textoComentario = document.getElementById('comentario-texto').value.trim();
-if (!textoComentario) {
-    mostrarNotificacion('Por favor escribe un comentario', 'error');
-    return;
-}
 
-if (!productoSeleccionado) {
-    mostrarNotificacion('Error: No se ha seleccionado un producto', 'error');
-    return;
-}
+    try {
+        mostrarNotificacion("⏳ Enviando comentario...", "info");
 
-const btnEnviar = document.getElementById('enviar-comentario');
-btnEnviar.disabled = true;
-btnEnviar.textContent = 'Enviando...';
+        const response = await fetch(CONFIG.DATA_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
+            body: JSON.stringify({
+                action: "addComment",
+                ProductoID: productoSeleccionado, // asegúrate que esta variable se asigna al abrir el modal
+                Usuario: "Anónimo",
+                Comentario: textoComentario
+            })
+        });
 
-try {
-    const response = await fetch(CONFIG.DATA_URL, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            ProductoID: productoSeleccionado,
-            Usuario: 'Anónimo',
-            Comentario: textoComentario
-        })
-    });
-    
-    if (!response.ok) {
-        throw new Error('Error al enviar comentario');
+        const result = await response.json();
+
+        if (result.status === "success") {
+            mostrarNotificacion("✅ Tu comentario fue enviado y está pendiente de aprobación.", "success");
+            document.getElementById("comentario-texto").value = "";
+        } else {
+            throw new Error(result.message || "Error al enviar comentario");
+        }
+    } catch (error) {
+        console.error("Error al enviar comentario:", error);
+        mostrarNotificacion("❌ No se pudo enviar el comentario. Intenta nuevamente más tarde.", "error");
     }
-    
-    document.getElementById('comentario-texto').value = '';
-    mostrarNotificacion('Comentario enviado. Pendiente de aprobación.', 'success');
-    
-} catch (error) {
-    console.error('Error al enviar comentario:', error);
-    mostrarNotificacion('Error al enviar comentario. Intenta nuevamente.', 'error');
-} finally {
-    btnEnviar.disabled = false;
-    btnEnviar.textContent = 'Enviar comentario';
-}
 }
 // Mostrar notificación
 function mostrarNotificacion(mensaje, tipo = 'success') {
@@ -293,3 +305,5 @@ setTimeout(() => {
     notificacion.classList.remove('show');
 }, 4000);
 }
+
+document.getElementById("enviar-comentario").addEventListener("click", enviarComentario);
