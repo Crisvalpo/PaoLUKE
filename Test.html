@@ -2,27 +2,64 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Prueba GET Productos</title>
+  <title>Prueba API PAOLUKE</title>
 </head>
 <body>
-  <h2>Obtener Productos</h2>
-  <button onclick="obtenerProductos()">Cargar Productos</button>
+  <h2>Pruebas API PAOLUKE</h2>
+
+  <button onclick="obtenerProductos()">📦 Obtener Productos</button>
+  <button onclick="enviarPedido()">🛒 Enviar Pedido de Prueba</button>
 
   <script>
+    const API_URL = "https://script.google.com/macros/s/AKfycbzCBFnL-RvYwtDWeIF6jSgMYdS3uiUfnue.../exec";
+
+    // ✅ GET Productos
     function obtenerProductos() {
-      fetch("https://script.google.com/macros/s/AKfycbzCBFnL-RvYwtDWeIF6jSgMYdS3uiUfnue.../exec?action=getProducts", {
-        method: "GET"
+      fetch(API_URL + "?action=getProducts", { method: "GET" })
+        .then(res => {
+          if (!res.ok) throw new Error("Respuesta HTTP no OK: " + res.status);
+          return res.json();
+        })
+        .then(data => {
+          console.log("✅ Productos recibidos:", data);
+          alert("Se recibieron " + data.length + " productos");
+        })
+        .catch(err => {
+          console.error("❌ Error al obtener productos:", err);
+          alert("Error: " + err.message);
+        });
+    }
+
+    // ✅ POST Pedido
+    function enviarPedido() {
+      fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "processOrder",
+          datosCliente: {
+            nombre: "Cristian",
+            email: "cristian@ejemplo.com",
+            telefono: "987654321",
+            direccion: "Concón",
+            notas: "Prueba desde GitHub Pages"
+          },
+          carrito: [
+            { nombre: "Disfraz Unicornio", cantidad: 1, precio: 12000, subtotal: 12000 }
+          ],
+          total: 12000
+        })
       })
       .then(res => {
         if (!res.ok) throw new Error("Respuesta HTTP no OK: " + res.status);
         return res.json();
       })
       .then(data => {
-        console.log("✅ Productos recibidos:", data);
-        alert("Se recibieron " + data.length + " productos");
+        console.log("✅ Pedido procesado:", data);
+        alert("Respuesta: " + data.mensaje);
       })
       .catch(err => {
-        console.error("❌ Error al obtener productos:", err);
+        console.error("❌ Error al enviar pedido:", err);
         alert("Error: " + err.message);
       });
     }
