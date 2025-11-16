@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Prueba de Escritura a Google Sheets</title>
+</head>
+<body>
+  <h2>Enviar Pedido de Prueba</h2>
+  <button onclick="enviarPedido()">Enviar</button>
+
+  <script>
+    function enviarPedido() {
+      fetch("https://script.google.com/macros/s/AKfycbzCBFnL-RvYwtDWeIF6jSgMYdS3uiUfnue.../exec", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          action: "processOrder",
+          datosCliente: {
+            nombre: "Cristian",
+            email: "cristian@ejemplo.com",
+            telefono: "987654321",
+            direccion: "Concón",
+            notas: "Prueba desde GitHub Pages"
+          },
+          carrito: [
+            { nombre: "Disfraz Unicornio", cantidad: 1, precio: 12000, subtotal: 12000 }
+          ],
+          total: 12000
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        console.log("✅ Respuesta del servidor:", data);
+        alert("Respuesta: " + data.mensaje);
+      })
+      .catch(err => {
+        console.error("❌ Error al enviar:", err);
+        alert("Error: " + err.message);
+      });
+    }
+  </script>
+</body>
+</html>
