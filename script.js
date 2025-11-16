@@ -2,7 +2,7 @@
 // CONFIGURACIÓN DE API
 // ========================================
 // !!! REEMPLAZA ESTA URL CON TU URL REAL DE DESPLIEGUE DE APPS SCRIPT WEB APP !!!
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx0j3IsUxAOzE93eUXyjLOgBurWGVJ4Dz7An4pizfpptFKWXC-M9rcFjakuHaoa7muN9Q/exec'; 
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzCBFnL-RvYwtDWelF6jSgMYdS3uiUfnueJ-eNYcT59MlFl-TZ0qzXU3ZyQAuuhqU5s0w/exec'; 
 
 // ========================================
 // VARIABLES GLOBALES
