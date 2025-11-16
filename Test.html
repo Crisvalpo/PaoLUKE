@@ -10,28 +10,20 @@
   <button onclick="obtenerProductos()">📦 Obtener Productos</button>
   <button onclick="enviarPedido()">🛒 Enviar Pedido de Prueba</button>
 
+  <!-- El script debe ir después de los botones -->
   <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbzCBFnL-RvYwtDWeIF6jSgMYdS3uiUfnue.../exec";
+    const API_URL = "https://script.google.com/macros/s/AKfycbzzqzqMFRScfryIOQlF6m8dUl_mSNxLAUeser7LebhJgI-u2xJfawhpRdtPBjtGE2J7Pw/exec";
 
-    // ✅ GET Productos
     function obtenerProductos() {
-<<<<<<< HEAD
       fetch(API_URL + "?action=getProducts", { method: "GET" })
-        .then(res => {
-          if (!res.ok) throw new Error("Respuesta HTTP no OK: " + res.status);
-          return res.json();
-        })
+        .then(res => res.json())
         .then(data => {
           console.log("✅ Productos recibidos:", data);
           alert("Se recibieron " + data.length + " productos");
         })
-        .catch(err => {
-          console.error("❌ Error al obtener productos:", err);
-          alert("Error: " + err.message);
-        });
+        .catch(err => console.error("❌ Error al obtener productos:", err));
     }
 
-    // ✅ POST Pedido
     function enviarPedido() {
       fetch(API_URL, {
         method: "POST",
@@ -50,23 +42,13 @@
           ],
           total: 12000
         })
-=======
-      fetch("https://script.google.com/macros/s/AKfycbzzqzqMFRScfryIOQlF6m8dUl_mSNxLAUeser7LebhJgI-u2xJfawhpRdtPBjtGE2J7Pw/exec?action=getProducts", {
-        method: "GET"
->>>>>>> 4e1e23f54864dd0b58c84d95ab4cbcc0158466c9
       })
-      .then(res => {
-        if (!res.ok) throw new Error("Respuesta HTTP no OK: " + res.status);
-        return res.json();
-      })
+      .then(res => res.json())
       .then(data => {
         console.log("✅ Pedido procesado:", data);
         alert("Respuesta: " + data.mensaje);
       })
-      .catch(err => {
-        console.error("❌ Error al enviar pedido:", err);
-        alert("Error: " + err.message);
-      });
+      .catch(err => console.error("❌ Error al enviar pedido:", err));
     }
   </script>
 </body>
