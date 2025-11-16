@@ -1,7 +1,6 @@
 // ========================================
 // CONFIGURACIÓN DE API
 // ========================================
-// !!! REEMPLAZA ESTA URL CON TU URL REAL DE DESPLIEGUE DE APPS SCRIPT WEB APP !!!
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzCBFnL-RvYwtDWelF6jSgMYdS3uiUfnueJ-eNYcT59MlFl-TZ0qzXU3ZyQAuuhqU5s0w/exec'; 
 
 // ========================================
@@ -27,13 +26,30 @@ document.addEventListener('DOMContentLoaded', function() {
 // ========================================
 function cargarConfiguracion() {
   fetch(APPS_SCRIPT_URL + '?action=getConfig')
-    .then(res => res.json())
+    .then(res => {
+      if (!res.ok) throw new Error('Error en la respuesta del servidor');
+      return res.json();
+    })
     .then(config => {
       CONFIG = config;
       aplicarConfiguracion(config);
     })
     .catch(error => {
       console.error('Error al cargar configuración:', error);
+      // Usar configuración por defecto si falla
+      CONFIG = {
+        nombre: 'PAOLUKE',
+        colorPrimario: '#FF1493',
+        colorSecundario: '#8B008B',
+        colorFondo: '#FFF0F5',
+        tipoFondo: 'SOLIDO',
+        logoURL: '',
+        instagram: 'disfracespaoluke',
+        whatsapp: '56912345678',
+        direccion: 'Villa Alemana, Chile',
+        mostrarDesc: true
+      };
+      aplicarConfiguracion(CONFIG);
     });
 }
 
@@ -44,8 +60,9 @@ function aplicarConfiguracion(cfg) {
   document.documentElement.style.setProperty('--color-fondo', cfg.colorFondo);
 
   // Aplicar textos
-  document.getElementById('logoImg').src = cfg.logoURL;
-  // document.getElementById('storeName').textContent = cfg.nombre; // (Oculto en diseño móvil)
+  if (cfg.logoURL) {
+    document.getElementById('logoImg').src = cfg.logoURL;
+  }
   document.getElementById('instagramLink').href = 'https://www.instagram.com/' + cfg.instagram + '/';
   
   // Footer
@@ -73,7 +90,10 @@ function aplicarConfiguracion(cfg) {
 // ========================================
 function cargarProductos() {
   fetch(APPS_SCRIPT_URL + '?action=getProducts')
-    .then(res => res.json())
+    .then(res => {
+      if (!res.ok) throw new Error('Error en la respuesta del servidor');
+      return res.json();
+    })
     .then(productos => {
       PRODUCTOS = productos;
       productosFiltrados = productos;
@@ -81,7 +101,8 @@ function cargarProductos() {
       mostrarProductos();
     })
     .catch(error => {
-      mostrarError('Error al cargar productos: ' + error);
+      console.error('Error al cargar productos:', error);
+      mostrarError('Error al cargar productos. Verifica que la URL de Apps Script sea correcta.');
     });
 }
 
@@ -329,23 +350,16 @@ function finalizarCompra(event) {
   btnSubmit.disabled = true;
   btnSubmit.textContent = 'Procesando...';
 
-  // Usando FETCH para enviar datos a Apps Script
+  // Enviar con POST regular (sin no-cors)
   fetch(APPS_SCRIPT_URL, {
     method: 'POST',
-    mode: 'no-cors', // Necesario para que Apps Script reciba POST desde dominios externos (GitHub Pages)
     headers: {
-      'Content-Type': 'text/plain', // Usamos text/plain para simplificar la pre-flight request con no-cors
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify(datosPedido)
   })
-    .then(res => {
-      // Como 'no-cors' impide leer el body, asumimos que el envío fue exitoso.
-      // Generamos un ID de pedido temporal para mostrar la confirmación.
-      const tempId = 'PED-' + new Date().getTime(); 
-
-      // Simular un resultado exitoso
-      const resultado = { exito: true, idPedido: tempId }; 
-      
+    .then(res => res.json())
+    .then(resultado => {
       btnSubmit.disabled = false;
       btnSubmit.innerHTML = `Confirmar Pedido - <span id="totalCompra">${formatearPrecio(total)}</span>`;
 
@@ -357,7 +371,7 @@ function finalizarCompra(event) {
         guardarCarritoLocalStorage();
         form.reset();
       } else {
-        mostrarNotificacion('❌ Error al procesar pedido');
+        mostrarNotificacion('❌ Error al procesar pedido: ' + (resultado.mensaje || 'Error desconocido'));
       }
     })
     .catch(error => {
@@ -417,7 +431,7 @@ function formatearPrecio(numero) {
   return Number(numero).toLocaleString('es-CL', {
     style: 'currency',
     currency: 'CLP',
-    minimumFractionDigits: 0 // Quitar decimales si no los necesita
+    minimumFractionDigits: 0
   });
 }
 
