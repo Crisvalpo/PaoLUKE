@@ -2,41 +2,27 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Prueba de Escritura a Google Sheets</title>
+  <title>Prueba GET Productos</title>
 </head>
 <body>
-  <h2>Enviar Pedido de Prueba</h2>
-  <button onclick="enviarPedido()">Enviar</button>
+  <h2>Obtener Productos</h2>
+  <button onclick="obtenerProductos()">Cargar Productos</button>
 
   <script>
-    function enviarPedido() {
-      fetch("https://script.google.com/macros/s/AKfycbzCBFnL-RvYwtDWeIF6jSgMYdS3uiUfnue.../exec", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          action: "processOrder",
-          datosCliente: {
-            nombre: "Cristian",
-            email: "cristian@ejemplo.com",
-            telefono: "987654321",
-            direccion: "Concón",
-            notas: "Prueba desde GitHub Pages"
-          },
-          carrito: [
-            { nombre: "Disfraz Unicornio", cantidad: 1, precio: 12000, subtotal: 12000 }
-          ],
-          total: 12000
-        })
+    function obtenerProductos() {
+      fetch("https://script.google.com/macros/s/AKfycbzCBFnL-RvYwtDWeIF6jSgMYdS3uiUfnue.../exec?action=getProducts", {
+        method: "GET"
       })
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error("Respuesta HTTP no OK: " + res.status);
+        return res.json();
+      })
       .then(data => {
-        console.log("✅ Respuesta del servidor:", data);
-        alert("Respuesta: " + data.mensaje);
+        console.log("✅ Productos recibidos:", data);
+        alert("Se recibieron " + data.length + " productos");
       })
       .catch(err => {
-        console.error("❌ Error al enviar:", err);
+        console.error("❌ Error al obtener productos:", err);
         alert("Error: " + err.message);
       });
     }
