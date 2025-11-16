@@ -1,7 +1,7 @@
 // ========================================
 // CONFIGURACIÓN DE API
 // ========================================
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzCBFnL-RvYwtDWelF6jSgMYdS3uiUfnueJ-eNYcT59MlFl-TZ0qzXU3ZyQAuuhqU5s0w/exec'; 
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzzqzqMFRScfryIOQlF6m8dUl_mSNxLAUeser7LebhJgI-u2xJfawhpRdtPBjtGE2J7Pw/exec'; 
 
 // ========================================
 // VARIABLES GLOBALES
