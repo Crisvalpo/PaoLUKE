@@ -15,6 +15,7 @@
 
     // ✅ GET Productos
     function obtenerProductos() {
+<<<<<<< HEAD
       fetch(API_URL + "?action=getProducts", { method: "GET" })
         .then(res => {
           if (!res.ok) throw new Error("Respuesta HTTP no OK: " + res.status);
@@ -49,6 +50,10 @@
           ],
           total: 12000
         })
+=======
+      fetch("https://script.google.com/macros/s/AKfycbzzqzqMFRScfryIOQlF6m8dUl_mSNxLAUeser7LebhJgI-u2xJfawhpRdtPBjtGE2J7Pw/exec?action=getProducts", {
+        method: "GET"
+>>>>>>> 4e1e23f54864dd0b58c84d95ab4cbcc0158466c9
       })
       .then(res => {
         if (!res.ok) throw new Error("Respuesta HTTP no OK: " + res.status);
