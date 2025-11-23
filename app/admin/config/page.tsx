@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ArrowLeft, Save, Eye, EyeOff } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
-import Image from 'next/image';
 
 interface Config {
   id: number;
@@ -129,28 +128,33 @@ export default function ConfigPage() {
               />
             </div>
 
-            <div className="space-y-2">
-  <label htmlFor="logo_svg" className="block text-sm font-medium">
-    Logo SVG
-  </label>
-  <textarea
-    id="logo_svg"
-    name="logo_svg"
-    rows={10}
-    placeholder="Pega aquí el código SVG..."
-    className="w-full px-3 py-2 border border-gray-300 rounded-md font-mono text-sm"
-    defaultValue={config.logo_svg || ''}
-  />
-  {config.logo_svg && (
-    <div className="mt-2">
-      <p className="text-sm text-gray-600">Vista previa del logo:</p>
-      <div 
-        className="mt-1 p-4 border border-gray-200 rounded-md bg-white flex items-center justify-center"
-        dangerouslySetInnerHTML={{ __html: config.logo_svg }}
-      />
-    </div>
-  )}
-</div>
+            {/* CAMPO LOGO SVG - CORREGIDO */}
+            <div>
+              <label className="text-sm font-medium text-gray-700 mb-2 block">
+                Logo SVG (código completo)
+              </label>
+              <textarea
+                value={config.logo_svg || ''}
+                onChange={(e) => setConfig({ ...config, logo_svg: e.target.value })}
+                rows={10}
+                placeholder='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">...</svg>'
+                className="w-full px-4 py-3 bg-gray-100 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-pink-500 font-mono"
+              />
+              <p className="text-xs text-gray-400 mt-1">
+                Pega el código SVG completo incluyendo las etiquetas &lt;svg&gt;...&lt;/svg&gt;
+              </p>
+              
+              {/* Vista previa del logo */}
+              {config.logo_svg && (
+                <div className="mt-3 p-4 border border-gray-200 rounded-lg bg-white">
+                  <p className="text-xs font-medium text-gray-700 mb-2">Vista previa del logo:</p>
+                  <div 
+                    className="w-32 h-32 mx-auto flex items-center justify-center"
+                    dangerouslySetInnerHTML={{ __html: config.logo_svg }}
+                  />
+                </div>
+              )}
+            </div>
 
             <div>
               <label className="text-sm font-medium text-gray-700 mb-2 block">
@@ -378,6 +382,7 @@ export default function ConfigPage() {
           <ul className="list-disc list-inside space-y-1 text-xs">
             <li>El número de WhatsApp debe incluir código de país (56 para Chile)</li>
             <li>El banner se muestra en la página principal de la tienda</li>
+            <li>El logo SVG se mostrará en el header de la tienda</li>
             <li>Los cambios se aplican inmediatamente al guardar</li>
           </ul>
         </div>

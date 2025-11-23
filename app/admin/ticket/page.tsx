@@ -121,6 +121,7 @@ export default function TicketPage() {
 
   // Función de impresión corregida
   const handlePrint = useReactToPrint({
+    // @ts-ignore
     content: () => {
       if (!ticketRef.current) {
         console.error('No se encontró la referencia del ticket');

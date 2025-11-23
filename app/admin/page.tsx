@@ -20,7 +20,7 @@ export default function AdminDashboard() {
     vendidos: productos.filter((p) => p.estado === 'vendido').length,
     stockBajo: productos.filter(
       (p) =>
-        p.variantes.reduce((a, v) => a + v.s, 0) <= 2 &&
+        p.variantes.reduce((a: number, v: { s: number }) => a + v.s, 0) <= 2 &&
         p.estado === 'disponible'
     ).length,
   };

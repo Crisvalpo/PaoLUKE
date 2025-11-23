@@ -35,7 +35,7 @@ export default function EstadoModal({ producto, onClose, onChange }: Props) {
                 }`}
                 style={
                   isActive
-                    ? { background: config.color + '20', ringColor: config.color }
+                    ? { background: config.color + '20' }
                     : {}
                 }
               >

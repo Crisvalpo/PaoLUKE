@@ -4,6 +4,8 @@ import { supabase } from '@/lib/supabase';
 
 interface Config {
   id: number;
+  nombre_tienda: string;
+  logo_svg: string;
   banner_activo: boolean;
   banner_texto: string;
   banner_subtexto: string;
