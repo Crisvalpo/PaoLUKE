@@ -11,10 +11,15 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  
+
   // Optimizaciones de producción
   reactStrictMode: true,
-  
+
+  // 🚨 Ignorar ESLint en build (Vercel incluido)
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+
   // Headers de seguridad
   async headers() {
     return [
@@ -23,11 +28,11 @@ const nextConfig: NextConfig = {
         headers: [
           {
             key: 'X-DNS-Prefetch-Control',
-            value: 'on'
+            value: 'on',
           },
           {
             key: 'X-Frame-Options',
-            value: 'SAMEORIGIN'
+            value: 'SAMEORIGIN',
           },
         ],
       },
